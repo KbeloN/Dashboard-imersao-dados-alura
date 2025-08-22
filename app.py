@@ -28,10 +28,6 @@ experiencias_selecionadas = st.sidebar.multiselect("Experiência(s)", experienci
 tipos_trabalho_disponiveis = sorted(df['tipo_trabalho'].unique())
 tipos_trabalho_selecionados = st.sidebar.multiselect("Tipo de Trabalho(s)", tipos_trabalho_disponiveis, default=tipos_trabalho_disponiveis)
 
-# Filtro (Taxa Remoto)
-taxas_remoto_disponiveis = sorted(df['taxa_remoto'].unique())
-taxas_remoto_selecionadas = st.sidebar.multiselect("Taxa Remoto(s)", taxas_remoto_disponiveis, default=taxas_remoto_disponiveis)
-
 # Filtro (Tamanho da empresa)
 tam_empresa_disponiveis = sorted(df['tamanho_empresa'].unique())
 tam_empresa_selecionados = st.sidebar.multiselect("Tamanho da Empresa(s)", tam_empresa_disponiveis, default=tam_empresa_disponiveis)
@@ -41,16 +37,15 @@ df_filtrado = df[
     df['ano'].isin(ano_selecionado) &
     df['experiencia'].isin(experiencias_selecionadas) &
     df['tipo_trabalho'].isin(tipos_trabalho_selecionados) &
-    df['taxa_remoto'].isin(taxas_remoto_selecionadas) &
     df['tamanho_empresa'].isin(tam_empresa_selecionados)             
     ]
 
 # Conteúdo principal
-st.title("Dashboard Interativo do mundo da Tecnologia")
-st.markdown("Dados salariais de profissionais da tecnologia dos últimos anos (Selecione os filtros à esquerda).")
+st.title("🎲 Dashboard Interativo na área de dados")
+st.markdown("Dados salariais de profissionais da área de dados nos últimos anos (Selecione os filtros à esquerda para alterar as estatísticas).")
 
 # Subtítulo das métricas
-st.subheader("Métricas gerais (Salário anual em USD)")
+st.subheader("Métricas Gerais (Salário anual em USD)")
 
 # Métricas gerais
 if not df_filtrado.empty:
@@ -65,13 +60,13 @@ else:
 col1, col2, col3, col4 = st.columns(4)
 col1.metric("Salário Médio", f"${salario_media:,.0f}")
 col2.metric("Salário Máximo", f"${salario_max:,.0f}")
-col3.metric("Quantidade de Registros", f"${quant_registros:,}")
+col3.metric("Quantidade de Registros", f"{quant_registros:,}")
 col4.metric("Cargo Mais Frequente", cargo_mais_frequente)
 
 st.markdown("---")
 
 # Gráficos
-
+st.header('Gráficos:')
 #Linha com os gráficos 1 e 2
 col_graf1, col_graf2 = st.columns(2)
 
@@ -98,9 +93,9 @@ with col_graf2:
             df_filtrado,
             x='usd',
             nbins=30,
-            title="Distribuição Salarial Anual",
+            title="Distribuição das Médias Salariais Anuais da Empresa",
             labels={'usd': 'Salário anual (USD)'})
-        grafico_anual.update_layout(title_x=0.1, yaxis_title_text=None)
+        grafico_anual.update_layout(title_x=0.1, yaxis_title='Contagem de Profissionais')
         st.plotly_chart(grafico_anual, use_container_width=True)
     else:
         st.warning("Nenhum dado disponível para exibir.")
@@ -119,7 +114,7 @@ with col_graf3:
             remoto_est,
             names='taxa_remoto',
             values='quantidade',
-            title='Distribuição dos tipos de trabalho',
+            title='Proporção dos Tipos de Trabalho',
             hole=0.5)
         grafico_rosca.update_layout(title_x=0.1)
         st.plotly_chart(grafico_rosca, use_container_width=True)
