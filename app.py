@@ -132,7 +132,7 @@ with col_graf4:
             locations='residencia_iso3',
             color='usd',
             color_continuous_scale='rdylgn',
-            title='Média salarial data scientist por país',
+            title='Média salarial de Cientistas de Dados por País',
             labels={'usd': 'Média salárial (USD)', 'residencia_iso3': 'País'})
         grafico_ds_pais.update_layout(title_x=0.1)
         st.plotly_chart(grafico_ds_pais, use_container_width=True)
